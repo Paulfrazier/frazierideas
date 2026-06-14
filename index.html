@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Frazier Ideas — a one-person internet idea factory</title>
+  <meta name="description" content="Frazier Ideas LLC — small software, strong opinions. The launchpad for everything Paul Frazier ships: Tight Burrito, PlanShopEat, and the Fairpoint quizzes & tools. Made in Portland." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Frazier Ideas — a one-person internet idea factory" />
+  <meta property="og:description" content="Small software, strong opinions. Apps, quizzes, and tools — all shipped, all live." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://frazierideas.com" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #4A154B;
+      --purple-electric: #6D28D9;
+      --lime: #84CC16;
+      --lime-ink: #2f4d0a;
+      --coral: #FB5D3C;
+      --gold: #ECB22E;
+      --ink: #1d1c1d;
+      --paper: #FBFAFF;
+      --card: #ffffff;
+      --muted: #6b6b6b;
+      --border: #e6e6e6;
+      --shadow: 4px 4px 0 var(--ink);
+      --shadow-lg: 6px 6px 0 var(--ink);
+      --shadow-xl: 9px 9px 0 var(--ink);
+      --radius: 16px;
+      --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --grot: "Space Grotesk", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at 8% 4%, rgba(109,40,217,0.14), transparent 34%),
+        radial-gradient(circle at 92% 2%, rgba(251,93,60,0.14), transparent 32%),
+        radial-gradient(circle at 50% 100%, rgba(132,204,22,0.12), transparent 40%),
+        radial-gradient(circle at 100% 60%, rgba(236,178,46,0.10), transparent 34%),
+        var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .wrap { max-width: 860px; margin: 0 auto; padding: 48px 22px 90px; }
+
+    /* ---------- HERO ---------- */
+    .hero { position: relative; padding-top: 18px; }
+
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+      background: var(--gold);
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 6px 14px;
+      box-shadow: var(--shadow);
+      transform: rotate(-2deg);
+    }
+
+    .hero h1 {
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: clamp(58px, 13vw, 124px);
+      line-height: 0.86;
+      letter-spacing: -0.04em;
+      margin: 20px 0 0;
+      text-transform: uppercase;
+    }
+    .hero h1 .l1 { color: var(--purple-electric); display: block; }
+    .hero h1 .l2 { color: var(--coral); display: block; }
+    /* chunky outline + offset shadow on the wordmark */
+    .hero h1 .l1, .hero h1 .l2 {
+      -webkit-text-stroke: 2px var(--ink);
+      text-shadow: var(--shadow-xl);
+      paint-order: stroke fill;
+    }
+
+    .tagline {
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: clamp(20px, 4.4vw, 30px);
+      color: var(--purple);
+      margin: 26px 0 0;
+      letter-spacing: -0.01em;
+    }
+    .tagline .rotator {
+      display: inline-block;
+      background: var(--lime);
+      color: var(--lime-ink);
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      padding: 0 10px;
+      box-shadow: 3px 3px 0 var(--ink);
+      transform: rotate(-1.5deg);
+      min-width: 1ch;
+    }
+    .sub {
+      font-size: clamp(16px, 2.6vw, 19px);
+      color: var(--muted);
+      margin: 16px 0 0;
+      max-width: 600px;
+      font-weight: 500;
+    }
+    .sub strong { color: var(--ink); }
+
+    /* scattered sticker badges */
+    .stickers {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .sticker {
+      position: absolute;
+      font-family: var(--grot);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      padding: 6px 13px;
+      box-shadow: var(--shadow);
+      white-space: nowrap;
+      animation: float 5s ease-in-out infinite;
+    }
+    .sticker.s1 { top: 4px;   right: 2%;  background: var(--coral);          color: #fff;            transform: rotate(6deg);  animation-delay: -0.4s; }
+    .sticker.s2 { top: 128px; right: -1%; background: var(--lime);           color: var(--lime-ink); transform: rotate(-5deg); animation-delay: -1.6s; }
+    .sticker.s3 { top: 70px;  left: -1%;  background: var(--purple-electric); color: #fff;           transform: rotate(-4deg); animation-delay: -2.6s; }
+    .sticker.s4 { top: 220px; right: 8%;  background: var(--gold);           color: var(--ink);      transform: rotate(4deg);  animation-delay: -3.4s; }
+
+    @keyframes float {
+      0%, 100% { translate: 0 0; }
+      50%      { translate: 0 -8px; }
+    }
+
+    /* ---------- STATS ---------- */
+    .stats {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      margin: 46px 0 0;
+    }
+    .stat {
+      flex: 1 1 0; min-width: 130px;
+      background: var(--card);
+      border: 3px solid var(--ink);
+      border-bottom: 8px solid var(--stat-accent, var(--purple-electric));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px 18px;
+      transition: transform 0.12s var(--bounce);
+    }
+    .stat:hover { transform: translateY(-3px) rotate(-1deg); }
+    .stat .num {
+      font-family: var(--grot); font-weight: 700;
+      font-size: 34px; line-height: 1; color: var(--purple);
+      letter-spacing: -0.02em;
+    }
+    .stat .label {
+      font-size: 12px; color: var(--muted); margin-top: 6px;
+      text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
+    }
+
+    /* ---------- SECTION HEADINGS ---------- */
+    .section-head {
+      display: flex; align-items: baseline; gap: 12px;
+      margin: 60px 0 18px;
+    }
+    .section-head h2 {
+      font-family: var(--grot); font-weight: 700;
+      font-size: clamp(26px, 5vw, 36px);
+      margin: 0; color: var(--purple); letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+    .section-head .count {
+      font-family: var(--grot); font-weight: 700; font-size: 13px;
+      color: var(--ink); background: var(--lime);
+      border: 2px solid var(--ink); border-radius: 999px;
+      padding: 3px 11px; box-shadow: 2px 2px 0 var(--ink);
+      transform: translateY(-4px) rotate(-2deg);
+    }
+
+    /* ---------- LIVE APP CARDS (2-up) ---------- */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+    .card {
+      display: flex; flex-direction: column;
+      background: var(--card);
+      border: 3px solid var(--ink);
+      border-top: 9px solid var(--accent, var(--purple-electric));
+      border-radius: var(--radius);
+      padding: 22px 22px 20px;
+      text-decoration: none; color: inherit;
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.13s var(--bounce), box-shadow 0.13s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::after {
+      content: "";
+      position: absolute; right: -40px; top: -40px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: var(--accent, var(--purple-electric));
+      opacity: 0.10;
+    }
+    .card:hover { transform: translate(-4px, -4px); box-shadow: 11px 11px 0 var(--ink); }
+    .card:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
+
+    .card .tag {
+      align-self: flex-start;
+      font-family: var(--grot); font-weight: 700; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      padding: 4px 11px; border-radius: 999px;
+      border: 2px solid var(--ink);
+      background: var(--accent, var(--purple-electric));
+      color: var(--accent-ink, #fff);
+      box-shadow: 2px 2px 0 var(--ink);
+      margin-bottom: 14px;
+    }
+    .card .title {
+      font-family: var(--grot); font-weight: 700;
+      font-size: 25px; color: var(--ink); margin: 0 0 8px;
+      letter-spacing: -0.015em;
+    }
+    .card .blurb { font-size: 15px; color: #333; margin: 0 0 16px; flex: 1; }
+    .card .go {
+      font-family: var(--grot); font-weight: 700; font-size: 14px;
+      color: var(--accent-ink-dark, var(--purple-electric));
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .card .go .url { color: var(--muted); font-weight: 600; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+    .card .arrow { transition: transform 0.15s var(--bounce); display: inline-block; }
+    .card:hover .arrow { transform: translateX(4px); }
+
+    /* ---------- FAIRPOINT FEATURE CARD (full-bleed) ---------- */
+    .feature {
+      display: block; text-decoration: none; color: #fff;
+      margin-top: 18px;
+      background:
+        radial-gradient(circle at 90% 10%, rgba(236,178,46,0.35), transparent 45%),
+        radial-gradient(circle at 0% 100%, rgba(251,93,60,0.30), transparent 50%),
+        var(--purple);
+      border: 3px solid var(--ink);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-xl);
+      padding: 28px 30px 30px;
+      position: relative; overflow: hidden;
+      transition: transform 0.13s var(--bounce), box-shadow 0.13s;
+    }
+    .feature:hover { transform: translate(-4px, -4px); box-shadow: 13px 13px 0 var(--ink); }
+    .feature:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0 var(--ink); }
+    .feature .ftag {
+      display: inline-block;
+      font-family: var(--grot); font-weight: 700; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      background: var(--gold); color: var(--ink);
+      border: 2px solid var(--ink); border-radius: 999px;
+      padding: 4px 12px; box-shadow: 2px 2px 0 var(--ink);
+    }
+    .feature .ftitle {
+      font-family: var(--grot); font-weight: 700;
+      font-size: clamp(30px, 6vw, 46px); margin: 16px 0 6px;
+      letter-spacing: -0.02em; line-height: 1;
+    }
+    .feature .fblurb { font-size: 16px; max-width: 560px; margin: 0 0 6px; color: rgba(255,255,255,0.92); }
+    .feature .fgo {
+      font-family: var(--grot); font-weight: 700; font-size: 15px;
+      color: var(--lime); margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .feature .big12 {
+      position: absolute; right: 18px; bottom: -22px;
+      font-family: var(--grot); font-weight: 700;
+      font-size: 150px; line-height: 1; color: rgba(255,255,255,0.10);
+      letter-spacing: -0.04em; pointer-events: none;
+    }
+    .feature .big12 small { font-size: 34px; vertical-align: super; }
+
+    /* ---------- WORKSHOP (dashed teasers) ---------- */
+    .workshop { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .wcard {
+      background: rgba(255,255,255,0.5);
+      border: 3px dashed var(--w-accent, var(--purple-electric));
+      border-radius: var(--radius);
+      padding: 20px 20px 18px;
+      position: relative;
+    }
+    .wcard .wtag {
+      position: absolute; top: 16px; right: 16px;
+      font-family: var(--grot); font-weight: 700; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      background: var(--w-accent, var(--purple-electric)); color: #fff;
+      border: 2px solid var(--ink); border-radius: 999px;
+      padding: 3px 9px; box-shadow: 2px 2px 0 var(--ink);
+      transform: rotate(3deg);
+    }
+    .wcard.gold .wtag { color: var(--ink); }
+    .wcard .wtitle {
+      font-family: var(--grot); font-weight: 700; font-size: 20px;
+      color: var(--ink); margin: 0 0 6px; padding-right: 56px; letter-spacing: -0.01em;
+    }
+    .wcard .wblurb { font-size: 14px; color: #444; margin: 0; }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: 72px; padding-top: 26px;
+      border-top: 3px solid var(--ink);
+      font-size: 14px; color: var(--muted);
+      display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    footer .made {
+      font-family: var(--grot); font-weight: 700; color: var(--ink);
+    }
+    footer a { color: var(--purple-electric); text-decoration: none; font-weight: 700; }
+    footer a:hover { text-decoration: underline; }
+    footer .dot { color: var(--border); }
+    footer .llc {
+      font-family: var(--grot); font-weight: 700; font-size: 12px;
+      background: var(--lime); color: var(--lime-ink);
+      border: 2px solid var(--ink); border-radius: 999px;
+      padding: 3px 11px; box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 640px) {
+      .wrap { padding: 34px 18px 64px; }
+      .grid, .workshop { grid-template-columns: 1fr; }
+      .sticker.s4 { display: none; }
+      .feature .big12 { font-size: 110px; right: 8px; }
+    }
+    @media (max-width: 400px) {
+      .sticker { font-size: 11px; padding: 5px 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+      .sticker { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="stickers" aria-hidden="true">
+        <span class="sticker s1">ships fast ⚡</span>
+        <span class="sticker s2">made in PDX</span>
+        <span class="sticker s3">est. 2026</span>
+        <span class="sticker s4">1 person · 1 LLC</span>
+      </div>
+
+      <span class="eyebrow">Frazier Ideas LLC</span>
+      <h1>
+        <span class="l1">Frazier</span>
+        <span class="l2">Ideas</span>
+      </h1>
+      <p class="tagline">A one-person internet <span class="rotator" id="rotator">idea factory</span>.</p>
+      <p class="sub"><strong>Small software, strong opinions.</strong> Apps, quizzes, and tools — all shipped, all live, all out of Portland, Oregon.</p>
+
+      <div class="stats" id="stats"></div>
+    </header>
+
+    <!-- LIVE WORK -->
+    <div class="section-head">
+      <h2>The good stuff</h2>
+      <span class="count">live now</span>
+    </div>
+
+    <section class="grid" id="apps" aria-label="Live apps"></section>
+
+    <a class="feature" href="https://fairpoint.website" target="_blank" rel="noopener" aria-label="Fairpoint — 12 quizzes and tools">
+      <span class="ftag">The flagship</span>
+      <div class="ftitle">Fairpoint</div>
+      <p class="fblurb">An empire inside the empire: quick, opinionated quizzes &amp; calculators on Slack, meetings, shipping, stats, and money. Each one walks you through dozens of real scenarios — a fair point at a time.</p>
+      <span class="fgo">Explore all 12 → fairpoint.website</span>
+      <span class="big12" aria-hidden="true">12<small>+</small></span>
+    </a>
+
+    <!-- WORKSHOP -->
+    <div class="section-head">
+      <h2>In the workshop</h2>
+      <span class="count">cooking</span>
+    </div>
+
+    <section class="workshop" id="workshop" aria-label="In progress"></section>
+
+    <!-- FOOTER -->
+    <footer>
+      <span class="made">Built by <a href="https://github.com/Paulfrazier" target="_blank" rel="noopener">Paul Frazier</a></span>
+      <span class="dot">·</span>
+      <span class="llc">Frazier Ideas LLC · Portland, OR</span>
+      <span class="dot">·</span>
+      <a href="mailto:paulfrazier@gmail.com">say hi</a>
+    </footer>
+  </main>
+
+  <script>
+    // ----- stats -----
+    const STATS = [
+      { num: "2",    label: "apps live",        accent: "var(--coral)" },
+      { num: "12+",  label: "quizzes & tools",  accent: "var(--purple-electric)" },
+      { num: "400+", label: "scenarios written", accent: "var(--lime)" },
+      { num: "1",    label: "idea factory",     accent: "var(--gold)" }
+    ];
+
+    // ----- live standalone apps (2-up) -----
+    const APPS = [
+      {
+        tag: "App · Live",
+        title: "Tight Burrito",
+        blurb: "Snap a photo of your burrito and get its Wrap Tension Score — a deadly-serious rating of structural integrity, judged by Claude vision. The internet's premier burrito-engineering authority.",
+        url: "https://tightburrito.com",
+        accent: "var(--coral)", ink: "#fff"
+      },
+      {
+        tag: "App · Live",
+        title: "PlanShopEat",
+        blurb: "Recipes → meal plan → shopping list → groceries in your cart. Import any recipe, plan the week on a drag-and-drop board, and push the list straight to Kroger / Fred Meyer. iOS app too.",
+        url: "https://planshopeat.app",
+        accent: "var(--lime)", ink: "var(--lime-ink)"
+      }
+    ];
+
+    // ----- workshop (no links) -----
+    const WORKSHOP = [
+      { title: "Pothole Reporter", tag: "soon", accent: "var(--purple-electric)",
+        blurb: "Snap a pothole, auto-file the report to Portland's PDX Reporter. Native iOS + a web PWA." },
+      { title: "BikeRouteNicePDX", tag: "soon", accent: "var(--coral)",
+        blurb: "Finger-draw a route and snap it to Portland's neighborhood greenways. Quiet streets, not arterials." },
+      { title: "Trip Shift", tag: "soon", accent: "var(--gold)", gold: true,
+        blurb: "Turn car trips into walks, rides, and bus hops — and watch the CO₂, calories, and miles add up." }
+    ];
+
+    function el(tag, cls, txt) {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (txt != null) e.textContent = txt;
+      return e;
+    }
+
+    function renderStats() {
+      document.getElementById("stats").replaceChildren(...STATS.map(s => {
+        const d = el("div", "stat");
+        d.style.setProperty("--stat-accent", s.accent);
+        d.append(el("div", "num", s.num), el("div", "label", s.label));
+        return d;
+      }));
+    }
+
+    function renderApps() {
+      document.getElementById("apps").replaceChildren(...APPS.map(a => {
+        const card = el("a", "card");
+        card.href = a.url;
+        card.target = "_blank";
+        card.rel = "noopener";
+        card.style.setProperty("--accent", a.accent);
+        card.style.setProperty("--accent-ink", a.ink);
+        card.append(el("span", "tag", a.tag), el("div", "title", a.title), el("p", "blurb", a.blurb));
+        const go = el("div", "go");
+        const arrow = el("span", "arrow", "→");
+        const url = el("span", "url", " " + a.url.replace(/^https?:\/\//, ""));
+        go.append(el("span", null, "Open"), arrow, url);
+        card.append(go);
+        return card;
+      }));
+    }
+
+    function renderWorkshop() {
+      document.getElementById("workshop").replaceChildren(...WORKSHOP.map(w => {
+        const d = el("div", "wcard" + (w.gold ? " gold" : ""));
+        d.style.setProperty("--w-accent", w.accent);
+        d.append(el("span", "wtag", w.tag), el("div", "wtitle", w.title), el("p", "wblurb", w.blurb));
+        return d;
+      }));
+    }
+
+    // ----- tagline word rotator -----
+    function startRotator() {
+      const words = ["idea factory", "quiz machine", "app studio", "tinkering den", "ship-it shop"];
+      const node = document.getElementById("rotator");
+      if (!node) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      let i = 0;
+      setInterval(() => {
+        i = (i + 1) % words.length;
+        node.style.opacity = "0";
+        setTimeout(() => { node.textContent = words[i]; node.style.opacity = "1"; }, 180);
+      }, 2400);
+      node.style.transition = "opacity 0.18s ease";
+    }
+
+    renderStats();
+    renderApps();
+    renderWorkshop();
+    startRotator();
+  </script>
+</body>
+</html>
