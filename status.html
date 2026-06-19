@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Status — Frazier Ideas</title>
+  <meta name="description" content="The workshop log: live status, progress, and build notes for everything Paul Frazier is shipping at Frazier Ideas." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Status — Frazier Ideas" />
+  <meta property="og:description" content="The workshop log: what's live, what's cooking, and what's next — with build notes." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://frazierideas.com/status" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #4A154B;
+      --purple-electric: #6D28D9;
+      --lime: #84CC16;
+      --lime-ink: #2f4d0a;
+      --coral: #FB5D3C;
+      --gold: #ECB22E;
+      --ink: #1d1c1d;
+      --paper: #FBFAFF;
+      --card: #ffffff;
+      --muted: #6b6b6b;
+      --border: #e6e6e6;
+      --shadow: 4px 4px 0 var(--ink);
+      --shadow-lg: 6px 6px 0 var(--ink);
+      --shadow-xl: 9px 9px 0 var(--ink);
+      --radius: 16px;
+      --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --grot: "Space Grotesk", sans-serif;
+
+      /* status colors */
+      --live: #16a34a;
+      --building: var(--coral);
+      --beta: var(--gold);
+      --planning: var(--purple-electric);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at 8% 4%, rgba(109,40,217,0.14), transparent 34%),
+        radial-gradient(circle at 92% 2%, rgba(251,93,60,0.14), transparent 32%),
+        radial-gradient(circle at 50% 100%, rgba(132,204,22,0.12), transparent 40%),
+        radial-gradient(circle at 100% 60%, rgba(236,178,46,0.10), transparent 34%),
+        var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .wrap { max-width: 880px; margin: 0 auto; padding: 34px 22px 90px; }
+
+    a { color: inherit; }
+
+    /* ---------- TOP NAV ---------- */
+    .topnav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 26px;
+    }
+    .back {
+      font-family: var(--grot); font-weight: 700; font-size: 14px;
+      text-decoration: none; color: var(--ink);
+      background: var(--card); border: 2px solid var(--ink);
+      border-radius: 999px; padding: 7px 15px; box-shadow: var(--shadow);
+      display: inline-flex; align-items: center; gap: 7px;
+      transition: transform 0.12s var(--bounce), box-shadow 0.12s;
+    }
+    .back:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+    .back:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--ink); }
+    .topnav .home-wordmark {
+      font-family: var(--grot); font-weight: 700; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+      text-decoration: none;
+    }
+    .topnav .home-wordmark b { color: var(--purple-electric); }
+
+    /* ---------- HERO ---------- */
+    .hero { position: relative; padding-top: 6px; }
+    .eyebrow {
+      display: inline-block; font-family: var(--grot); font-weight: 700;
+      font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--ink); background: var(--gold);
+      border: 2px solid var(--ink); border-radius: 999px;
+      padding: 6px 14px; box-shadow: var(--shadow); transform: rotate(-2deg);
+    }
+    .hero h1 {
+      font-family: var(--grot); font-weight: 700;
+      font-size: clamp(46px, 11vw, 96px); line-height: 0.88;
+      letter-spacing: -0.04em; margin: 20px 0 0; text-transform: uppercase;
+      color: var(--purple-electric);
+      -webkit-text-stroke: 2px var(--ink); text-shadow: var(--shadow-xl);
+      paint-order: stroke fill;
+    }
+    .hero .sub {
+      font-size: clamp(16px, 2.6vw, 19px); color: var(--muted);
+      margin: 18px 0 0; max-width: 620px; font-weight: 500;
+    }
+    .hero .sub strong { color: var(--ink); }
+    .updated {
+      font-family: var(--grot); font-weight: 700; font-size: 12px;
+      color: var(--muted); margin-top: 12px; display: inline-flex; gap: 7px; align-items: center;
+    }
+    .updated .pulse {
+      width: 9px; height: 9px; border-radius: 50%; background: var(--live);
+      box-shadow: 0 0 0 0 rgba(22,163,74,0.5); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(22,163,74,0.5); }
+      70% { box-shadow: 0 0 0 8px rgba(22,163,74,0); }
+      100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); }
+    }
+
+    /* ---------- STATS ---------- */
+    .stats { display: flex; gap: 12px; flex-wrap: wrap; margin: 34px 0 0; }
+    .stat {
+      flex: 1 1 0; min-width: 110px;
+      background: var(--card); border: 3px solid var(--ink);
+      border-bottom: 8px solid var(--stat-accent, var(--purple-electric));
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 14px 16px; transition: transform 0.12s var(--bounce);
+    }
+    .stat:hover { transform: translateY(-3px) rotate(-1deg); }
+    .stat .num { font-family: var(--grot); font-weight: 700; font-size: 32px; line-height: 1; color: var(--purple); letter-spacing: -0.02em; }
+    .stat .label { font-size: 11px; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+
+    /* ---------- FILTER BAR ---------- */
+    .filters { display: flex; gap: 9px; flex-wrap: wrap; margin: 40px 0 6px; }
+    .filter {
+      font-family: var(--grot); font-weight: 700; font-size: 13px;
+      cursor: pointer; border: 2px solid var(--ink); border-radius: 999px;
+      padding: 7px 14px; background: var(--card); color: var(--ink);
+      box-shadow: 2px 2px 0 var(--ink); transition: transform 0.1s var(--bounce), box-shadow 0.1s;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .filter:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); }
+    .filter[aria-pressed="true"] { background: var(--ink); color: #fff; box-shadow: 2px 2px 0 var(--purple-electric); }
+    .filter .swatch { width: 10px; height: 10px; border-radius: 3px; border: 1.5px solid var(--ink); }
+    .filter[aria-pressed="true"] .swatch { border-color: rgba(255,255,255,0.6); }
+
+    /* ---------- PROJECT CARDS ---------- */
+    .projects { display: flex; flex-direction: column; gap: 18px; margin-top: 22px; }
+
+    .proj {
+      background: var(--card); border: 3px solid var(--ink);
+      border-left: 9px solid var(--accent, var(--purple-electric));
+      border-radius: var(--radius); box-shadow: var(--shadow-lg);
+      padding: 22px 24px 20px; position: relative; overflow: hidden;
+    }
+    .proj .row1 { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .proj .titlewrap { flex: 1 1 auto; min-width: 200px; }
+    .proj .title {
+      font-family: var(--grot); font-weight: 700; font-size: 23px;
+      letter-spacing: -0.015em; margin: 0; color: var(--ink);
+    }
+    .proj .kind { font-size: 12px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+
+    .badges { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+    .badge {
+      font-family: var(--grot); font-weight: 700; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      border: 2px solid var(--ink); border-radius: 999px; padding: 4px 10px;
+      box-shadow: 2px 2px 0 var(--ink); white-space: nowrap;
+    }
+    .badge.status-live { background: var(--live); color: #fff; }
+    .badge.status-building { background: var(--building); color: #fff; }
+    .badge.status-beta { background: var(--beta); color: var(--ink); }
+    .badge.status-planning { background: var(--planning); color: #fff; }
+    .badge.vis-public { background: var(--lime); color: var(--lime-ink); }
+    .badge.vis-private { background: #ececf3; color: #555; }
+
+    .proj .blurb { font-size: 15px; color: #333; margin: 14px 0 0; max-width: 640px; }
+
+    /* progress */
+    .progress { margin: 16px 0 0; }
+    .progress .meta { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--grot); font-weight: 700; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    .progress .meta .pct { color: var(--ink); font-size: 13px; }
+    .bar { height: 12px; background: #efeef5; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent, var(--purple-electric)); border-right: 2px solid var(--ink); transition: width 0.6s var(--bounce); }
+
+    /* stack chips */
+    .stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; }
+    .chip {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px;
+      background: #f4f3fa; border: 1.5px solid var(--border); color: #444;
+      border-radius: 7px; padding: 3px 8px; font-weight: 600;
+    }
+
+    /* links */
+    .links { display: flex; flex-wrap: wrap; gap: 9px; margin: 16px 0 0; }
+    .lnk {
+      font-family: var(--grot); font-weight: 700; font-size: 13px; text-decoration: none;
+      border: 2px solid var(--ink); border-radius: 999px; padding: 6px 13px;
+      display: inline-flex; align-items: center; gap: 6px; box-shadow: 2px 2px 0 var(--ink);
+      transition: transform 0.1s var(--bounce), box-shadow 0.1s;
+    }
+    .lnk:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--ink); }
+    .lnk:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 var(--ink); }
+    .lnk.primary { background: var(--accent, var(--purple-electric)); color: #fff; }
+    .lnk.ghost { background: var(--card); color: var(--ink); }
+    .lnk .arrow { transition: transform 0.15s var(--bounce); }
+    .lnk:hover .arrow { transform: translateX(3px); }
+
+    /* changelog */
+    .logwrap { margin: 18px 0 0; border-top: 2px dashed var(--border); padding-top: 14px; }
+    .logwrap > summary {
+      font-family: var(--grot); font-weight: 700; font-size: 13px; color: var(--purple);
+      cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 7px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .logwrap > summary::-webkit-details-marker { display: none; }
+    .logwrap > summary .tri { transition: transform 0.15s ease; display: inline-block; }
+    .logwrap[open] > summary .tri { transform: rotate(90deg); }
+    .log { list-style: none; margin: 14px 0 0; padding: 0; position: relative; }
+    .log::before { content: ""; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 2px; background: var(--border); }
+    .log li { position: relative; padding: 0 0 14px 24px; }
+    .log li:last-child { padding-bottom: 0; }
+    .log li::before {
+      content: ""; position: absolute; left: 0; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent, var(--purple-electric)); border: 2px solid var(--ink);
+    }
+    .log .date { font-family: var(--grot); font-weight: 700; font-size: 12px; color: var(--muted); }
+    .log .what { font-size: 14px; color: #2a2a2a; margin-top: 1px; }
+
+    .empty { text-align: center; color: var(--muted); font-family: var(--grot); font-weight: 700; padding: 40px 0; }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: 64px; padding-top: 26px; border-top: 3px solid var(--ink);
+      font-size: 14px; color: var(--muted);
+      display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: center; text-align: center;
+    }
+    footer .made { font-family: var(--grot); font-weight: 700; color: var(--ink); }
+    footer a { color: var(--purple-electric); text-decoration: none; font-weight: 700; }
+    footer a:hover { text-decoration: underline; }
+    footer .dot { color: var(--border); }
+    footer .llc {
+      font-family: var(--grot); font-weight: 700; font-size: 12px;
+      background: var(--lime); color: var(--lime-ink);
+      border: 2px solid var(--ink); border-radius: 999px; padding: 3px 11px; box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    @media (max-width: 560px) {
+      .wrap { padding: 26px 16px 64px; }
+      .proj { padding: 20px 18px 18px; }
+      .badges { width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+
+    <nav class="topnav">
+      <a class="back" href="/">← Back home</a>
+      <a class="home-wordmark" href="/"><b>Frazier</b> Ideas</a>
+    </nav>
+
+    <header class="hero">
+      <span class="eyebrow">The workshop log</span>
+      <h1>Status</h1>
+      <p class="sub"><strong>Everything I'm building, in the open.</strong> What's live, what's cooking, what's next — with the build notes to prove it.</p>
+      <div class="updated"><span class="pulse"></span><span id="updated"></span></div>
+
+      <div class="stats" id="stats"></div>
+    </header>
+
+    <div class="filters" id="filters"></div>
+
+    <section class="projects" id="projects" aria-label="Project status"></section>
+
+    <footer>
+      <span class="made">Built by <a href="https://github.com/Paulfrazier" target="_blank" rel="noopener">Paul Frazier</a></span>
+      <span class="dot">·</span>
+      <span class="llc">Frazier Ideas LLC · Portland, OR</span>
+      <span class="dot">·</span>
+      <a href="mailto:paulfrazier@gmail.com">say hi</a>
+    </footer>
+  </main>
+
+  <script>
+    const LAST_UPDATED = "June 19, 2026";
+
+    // status keys: live | building | beta | planning
+    const STATUS_META = {
+      live:     { label: "Live",     color: "var(--live)" },
+      beta:     { label: "In beta",  color: "var(--beta)" },
+      building: { label: "Building", color: "var(--building)" },
+      planning: { label: "Planning", color: "var(--planning)" }
+    };
+
+    const PROJECTS = [
+      {
+        name: "PlanShopEat",
+        kind: "iOS + Web app",
+        status: "live", visibility: "private", progress: 90,
+        accent: "var(--lime)",
+        blurb: "Recipes → meal plan → shopping list → groceries in your cart. Import any recipe, plan the week on a drag-and-drop board, organize the list by store aisle or kitchen zone, and push it straight to Kroger / Fred Meyer. Native iOS app + installable PWA.",
+        stack: ["FastAPI", "React", "Postgres", "Clerk", "Kroger API", "SwiftUI", "Railway", "Vercel"],
+        links: [{ label: "planshopeat.app", href: "https://planshopeat.app", primary: true }],
+        log: [
+          { date: "Jun 2026", what: "App Store submission prep — 4 of 5 code blockers closed; org enrollment via the LLC underway." },
+          { date: "Jun 2026", what: "Shopping list now groups by store aisle or user-created kitchen zones, plus optional swipe-to-check." },
+          { date: "Jun 2026", what: "Native iOS app shipping alongside the web app; fixed week-start mismatch (Sunday vs Monday)." },
+          { date: "Spring 2026", what: "Photo recipe import, Kroger cart push, and PWA offline mode landed." }
+        ]
+      },
+      {
+        name: "Tight Burrito",
+        kind: "Web app",
+        status: "live", visibility: "public", progress: 100,
+        accent: "var(--coral)",
+        blurb: "Snap a photo of your burrito and get its Wrap Tension Score — a deadly-serious rating of structural integrity, judged by Claude vision. The internet's premier burrito-engineering authority.",
+        stack: ["FastAPI", "React", "Claude Haiku 4.5", "Clerk", "Cloudflare R2", "Railway", "Vercel"],
+        links: [
+          { label: "tightburrito.com", href: "https://tightburrito.com", primary: true },
+          { label: "GitHub", href: "https://github.com/Paulfrazier/tightburrito", ghost: true }
+        ],
+        log: [
+          { date: "2026", what: "Live and shipping — photo → Wrap Tension Score with auto-deploy on every push." }
+        ]
+      },
+      {
+        name: "Fairpoint",
+        kind: "Quiz & tool collection",
+        status: "live", visibility: "public", progress: 100,
+        accent: "var(--purple-electric)",
+        blurb: "An empire inside the empire: 12+ quick, opinionated quizzes & calculators on Slack etiquette, meetings, shipping, stats, and money — each walking you through dozens of real scenarios. Hosted as a family of micro-sites with shared neobrutalist DNA. Merch on Fourthwall.",
+        stack: ["Static HTML", "Space Grotesk", "Vercel", "Namecheap DNS", "Fourthwall"],
+        links: [
+          { label: "fairpoint.website", href: "https://fairpoint.website", primary: true },
+          { label: "shop.fairpoint.website", href: "https://shop.fairpoint.website", ghost: true }
+        ],
+        log: [
+          { date: "2026", what: "12+ quizzes & tools live as subdomains (Slack @here vs @channel, checklists, threads, and more)." },
+          { date: "2026", what: "Merch store stood up on Fourthwall at shop.fairpoint.website." }
+        ]
+      },
+      {
+        name: "Pothole Reporter",
+        kind: "iOS + Web + Android",
+        status: "beta", visibility: "private", progress: 75,
+        accent: "var(--gold)",
+        blurb: "Snap a pothole and auto-file the report to Portland's PDX Reporter — no forms. Native iOS auto-submits and can batch-import every pothole photo from your library; a web PWA hands off via share/email; an Android port ships through a personal F-Droid repo.",
+        stack: ["SwiftUI", "Static PWA", "Kotlin / Compose", "Vercel", "F-Droid"],
+        links: [
+          { label: "potholes.frazierideas.com", href: "https://potholes.frazierideas.com", primary: true }
+        ],
+        log: [
+          { date: "Jun 2026", what: "Privacy policy + legal docs done; App Store Connect record created. Next: archive & upload to TestFlight." },
+          { date: "Jun 2026", what: "Android port (Kotlin/Compose) building and distributed via a self-hosted F-Droid repo." },
+          { date: "Jun 2026", what: "Web PWA live on Vercel at a custom domain." }
+        ]
+      },
+      {
+        name: "BikeRouteNicePDX",
+        kind: "iOS + Web (PWA)",
+        status: "building", visibility: "public", progress: 60,
+        accent: "var(--coral)",
+        blurb: "Routing that prefers Portland's official neighborhood greenways over arterials — quiet streets, not stress. Finger-draw a path on iOS and snap it to the real bike network; the web app renders the full PBOT bike map color-coded by facility type.",
+        stack: ["Valhalla", "MapLibre", "Hono", "React", "SwiftUI", "PBOT GIS"],
+        links: [
+          { label: "GitHub", href: "https://github.com/Paulfrazier/bikeroutenicepdx", primary: true }
+        ],
+        log: [
+          { date: "Jun 19, 2026", what: "Repo made public." },
+          { date: "Jun 18, 2026", what: "Pivoted toward 'the Portland bike map' — full bike network (6,140 segments) color-coded by facility class, on both web and iOS." },
+          { date: "Jun 13, 2026", what: "Native finger-draw iOS app verified end-to-end: draw a path → map-matched route via Valhalla." },
+          { date: "May 3, 2026", what: "MVP scaffold complete — routing, server, web, and tests all clean." }
+        ]
+      },
+      {
+        name: "PDX Traffic Map",
+        kind: "Web tool",
+        status: "live", visibility: "public", progress: 70,
+        accent: "var(--purple-electric)",
+        blurb: "A live map of Portland-area freeway speeds, plotted from 747 real ODOT/WSDOT loop detectors. Toggle between raw speeds and speed-vs-typical; drop in a TomTom key for a street layer. No backend, no API key needed.",
+        stack: ["Leaflet", "PORTAL data", "Static / Vercel"],
+        links: [
+          { label: "traffic-map-mu.vercel.app", href: "https://traffic-map-mu.vercel.app", primary: true }
+        ],
+        log: [
+          { date: "2026", what: "Live with vs-typical + raw color modes and self-serve TomTom street layer. To do: dedicated repo + custom domain." }
+        ]
+      },
+      {
+        name: "Backplan",
+        kind: "Web + iOS tool",
+        status: "live", visibility: "public", progress: 80,
+        accent: "var(--lime)",
+        blurb: "A backwards time-planner: enter a target time and your steps, and it tells you when to start each one (and the whole thing). Single-file web app plus a native SwiftUI iOS app with a live countdown timer and notifications.",
+        stack: ["Static HTML", "SwiftUI", "XcodeGen", "Vercel"],
+        links: [
+          { label: "backplan.fairpoint.website", href: "https://backplan.fairpoint.website", primary: true },
+          { label: "GitHub", href: "https://github.com/Paulfrazier/backplan", ghost: true }
+        ],
+        log: [
+          { date: "Jun 12, 2026", what: "Native iOS app added (timer + notifications)." },
+          { date: "Jun 7, 2026", what: "Drag-to-reorder steps." },
+          { date: "2026", what: "Backlog: maps API for travel legs, URL-hash sharing, cross-device saving." }
+        ]
+      },
+      {
+        name: "Trip Shift",
+        kind: "Web app",
+        status: "planning", visibility: "private", progress: 30,
+        accent: "var(--gold)",
+        blurb: "Log the car trips you swapped for a walk, ride, or bus hop — and watch the CO₂, calories, and miles add up over time. A nudge toward leaving the second car at home.",
+        stack: ["FastAPI", "React", "SQLite"],
+        links: [],
+        log: [
+          { date: "2026", what: "Core tracking + impact math working. Next: Google Maps integration to auto-estimate trip distance." }
+        ]
+      },
+      {
+        name: "Travel Price Tracker",
+        kind: "CLI tool",
+        status: "building", visibility: "private", progress: 40,
+        accent: "var(--purple-electric)",
+        blurb: "Watch flight and rental-car prices from the terminal. A Click + Rich CLI that scrapes fares into SQLite so you can track them over time and pounce when they drop.",
+        stack: ["Python", "Click", "Rich", "Playwright", "SQLite"],
+        links: [],
+        log: [
+          { date: "2026", what: "Flight (fast-flights) + car (Kayak) checkers working with a SQLite history. Next: hotels, a scheduler, and a dashboard." }
+        ]
+      }
+    ];
+
+    // ---------- helpers ----------
+    function el(tag, cls, txt) {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (txt != null) e.textContent = txt;
+      return e;
+    }
+
+    // ---------- stats ----------
+    function renderStats() {
+      const live = PROJECTS.filter(p => p.status === "live").length;
+      const building = PROJECTS.filter(p => p.status === "building" || p.status === "beta").length;
+      const planning = PROJECTS.filter(p => p.status === "planning").length;
+      const stats = [
+        { num: String(PROJECTS.length), label: "projects", accent: "var(--purple-electric)" },
+        { num: String(live), label: "live now", accent: "var(--live)" },
+        { num: String(building), label: "in progress", accent: "var(--coral)" },
+        { num: String(planning), label: "on the bench", accent: "var(--gold)" }
+      ];
+      document.getElementById("stats").replaceChildren(...stats.map(s => {
+        const d = el("div", "stat");
+        d.style.setProperty("--stat-accent", s.accent);
+        d.append(el("div", "num", s.num), el("div", "label", s.label));
+        return d;
+      }));
+    }
+
+    // ---------- filters ----------
+    let activeFilter = "all";
+    function renderFilters() {
+      const opts = [
+        { key: "all", label: "Everything", color: "var(--ink)" },
+        { key: "live", label: "Live", color: "var(--live)" },
+        { key: "building", label: "Building", color: "var(--building)" },
+        { key: "beta", label: "In beta", color: "var(--beta)" },
+        { key: "planning", label: "Planning", color: "var(--planning)" }
+      ];
+      const bar = document.getElementById("filters");
+      bar.replaceChildren(...opts.map(o => {
+        const b = el("button", "filter");
+        b.setAttribute("aria-pressed", o.key === activeFilter ? "true" : "false");
+        if (o.key !== "all") {
+          const sw = el("span", "swatch");
+          sw.style.background = o.color;
+          b.append(sw);
+        }
+        b.append(document.createTextNode(o.label));
+        b.addEventListener("click", () => { activeFilter = o.key; renderFilters(); renderProjects(); });
+        return b;
+      }));
+    }
+
+    // ---------- projects ----------
+    function renderProjects() {
+      const list = PROJECTS.filter(p => activeFilter === "all" ? true : p.status === activeFilter);
+      const host = document.getElementById("projects");
+      if (!list.length) { host.replaceChildren(el("div", "empty", "Nothing here right now — try another filter.")); return; }
+
+      host.replaceChildren(...list.map(p => {
+        const card = el("section", "proj");
+        card.style.setProperty("--accent", p.accent);
+
+        // row 1: title + badges
+        const row1 = el("div", "row1");
+        const tw = el("div", "titlewrap");
+        tw.append(el("div", "title", p.name), el("div", "kind", p.kind));
+        const badges = el("div", "badges");
+        const sm = STATUS_META[p.status];
+        badges.append(el("span", "badge status-" + p.status, sm.label));
+        badges.append(el("span", "badge vis-" + p.visibility, p.visibility === "public" ? "Public" : "Private"));
+        row1.append(tw, badges);
+        card.append(row1);
+
+        // blurb
+        card.append(el("p", "blurb", p.blurb));
+
+        // progress
+        const prog = el("div", "progress");
+        const meta = el("div", "meta");
+        meta.append(el("span", null, "Progress"), el("span", "pct", p.progress + "%"));
+        const bar = el("div", "bar");
+        const fill = el("span");
+        fill.style.width = "0%";
+        bar.append(fill);
+        prog.append(meta, bar);
+        card.append(prog);
+        requestAnimationFrame(() => { fill.style.width = p.progress + "%"; });
+
+        // stack
+        if (p.stack && p.stack.length) {
+          const stack = el("div", "stack");
+          p.stack.forEach(s => stack.append(el("span", "chip", s)));
+          card.append(stack);
+        }
+
+        // links
+        if (p.links && p.links.length) {
+          const links = el("div", "links");
+          p.links.forEach(l => {
+            const a = el("a", "lnk " + (l.primary ? "primary" : "ghost"));
+            a.href = l.href; a.target = "_blank"; a.rel = "noopener";
+            a.append(document.createTextNode(l.label));
+            const arrow = el("span", "arrow", " →");
+            a.append(arrow);
+            links.append(a);
+          });
+          card.append(links);
+        }
+
+        // changelog
+        if (p.log && p.log.length) {
+          const det = el("details", "logwrap");
+          const sum = el("summary");
+          sum.append(el("span", "tri", "▸"), document.createTextNode("Build notes (" + p.log.length + ")"));
+          det.append(sum);
+          const ul = el("ul", "log");
+          p.log.forEach(entry => {
+            const li = el("li");
+            li.append(el("div", "date", entry.date), el("div", "what", entry.what));
+            ul.append(li);
+          });
+          det.append(ul);
+          card.append(det);
+        }
+
+        return card;
+      }));
+    }
+
+    document.getElementById("updated").textContent = "Last updated " + LAST_UPDATED;
+    renderStats();
+    renderFilters();
+    renderProjects();
+  </script>
+</body>
+</html>

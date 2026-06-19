@@ -1,5 +1,30 @@
 # Build Log — frazierideas
 
+## 2026-06-19 — Add /status sub-page (the workshop log)
+
+**Prompt:** "cool on [frazierideas].com i want a sub page that gives the project status. build notes, progress. both for me to be able to see, and to show to others." (Decisions chosen via follow-up: scope = *all projects, with a public/private split*; maintenance = *curated data array*, no build step.)
+
+**Problem:** The landing page only links **live** properties and shows in-progress work as link-less teasers. There was no single place to see real status — what's live vs building vs planning, how far along each thing is, and what actually shipped recently. Needed a page that works as both a personal command-center and something presentable to others, without leaking sensitive details of the private repos.
+
+**Solution:**
+- **New single-file `status.html`** (no build step, same Fairpoint/Frazier neobrutalist DNA as `index.html`: Space Grotesk, hard offset shadows, purple/lime/coral/gold tokens, bouncy hovers). Reachable at `/status` via clean URLs.
+- **Curated `PROJECTS` data array** (9 projects) — each with: status (`live`/`beta`/`building`/`planning`), **public/private** badge, a 0–100 **progress bar**, monospace **tech-stack chips**, live/repo **links**, and a collapsible **"Build notes"** changelog (dated milestones) — this is the "build notes, progress" the user asked for.
+  - Projects: PlanShopEat, Tight Burrito, Fairpoint, Pothole Reporter, BikeRouteNicePDX, PDX Traffic Map, Backplan, Trip Shift, Travel Price Tracker. (Old forks `teach-me`/`speed-camera` excluded — not Paul's work.)
+  - **Public/private split, safely:** private repos (PlanShopEat, Pothole Reporter, Trip Shift, Travel Price Tracker) are marked Private and kept high-level — no API internals, secrets, or reverse-engineering details — so the page is safe to show anyone.
+  - **Auto stats + filters:** the top stat strip (total / live / in-progress / on-the-bench) and the status filter bar are computed from the data, so they stay correct as the array changes. Filter buttons re-render the list client-side.
+  - Data-driven render with `textContent`-only DOM building (no innerHTML injection of data). Accessible (`aria-pressed` filters, real contrast), `prefers-reduced-motion` kills animation, responsive single-column at ≤560px.
+- **`vercel.json`** added (`cleanUrls: true`, `trailingSlash: false`) so the page serves at `/status`.
+- **Linked from home:** a pill button under the hero subtitle ("📡 See what's cooking — live status & build notes →") plus a `status` link in the footer.
+
+**Key decisions:**
+- **Curated array over auto-scraping BUILD_LOG.md files** (user's choice): keeps the no-build-step pattern, gives full control over what's public, and avoids dumping raw dev notes (some from private repos) onto a public page.
+- **Per-project Public/Private badge** so the page doubles as a visibility audit — the same question that kicked off this session.
+- To update: edit the `PROJECTS` array (and bump `LAST_UPDATED`) in `status.html`. No build, just `vercel deploy --prod`.
+
+**Verification:** Rendered both pages in the gstack headless browser (desktop 1280 + mobile 375). status.html: 9 cards, 4 computed stats, "Last updated June 19, 2026", no new console errors; the Live filter narrows to 5 cards; Build-notes `<details>` expands to dated entries; progress bars animate to width. index.html: status pill present and points to `/status`, no regressions.
+
+**Changed files:** `status.html` (new), `vercel.json` (new), `index.html`, `BUILD_LOG.md`
+
 ## 2026-06-13 — Launch frazierideas.com (the idea-factory launchpad)
 
 **Prompt:** "O SHIT. i bought frazierideas.com and registered frazier ideas llc as an llc.... LETS GO... make me a great landing page linkign to all my live stuff. GO. GO big. Be bold. be fun." (Then, after a mid-session computer crash and recovery: aesthetic = "Maximalist & playful" — option 3 from the pre-crash session; voice = "the idea factory"; include an in-progress "workshop" section.)

@@ -120,6 +120,19 @@
     }
     .sub strong { color: var(--ink); }
 
+    .statuslink {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--grot); font-weight: 700; font-size: 15px;
+      text-decoration: none; color: var(--ink);
+      background: var(--card); border: 2px solid var(--ink);
+      border-radius: 999px; padding: 9px 18px; box-shadow: var(--shadow);
+      margin: 22px 0 0; transition: transform 0.12s var(--bounce), box-shadow 0.12s;
+    }
+    .statuslink:hover { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--ink); }
+    .statuslink:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--ink); }
+    .statuslink .arrow { transition: transform 0.15s var(--bounce); }
+    .statuslink:hover .arrow { transform: translateX(4px); }
+
     /* scattered sticker badges */
     .stickers {
       position: absolute;
@@ -374,6 +387,8 @@
       <p class="tagline">A one-person internet <span class="rotator" id="rotator">idea factory</span>.</p>
       <p class="sub"><strong>Small software, strong opinions.</strong> Apps, quizzes, and tools — all shipped, all live, all out of Portland, Oregon.</p>
 
+      <a class="statuslink" href="/status">📡 See what's cooking — live status &amp; build notes <span class="arrow">→</span></a>
+
       <div class="stats" id="stats"></div>
     </header>
 
@@ -404,6 +419,8 @@
     <!-- FOOTER -->
     <footer>
       <span class="made">Built by <a href="https://github.com/Paulfrazier" target="_blank" rel="noopener">Paul Frazier</a></span>
+      <span class="dot">·</span>
+      <a href="/status">status</a>
       <span class="dot">·</span>
       <span class="llc">Frazier Ideas LLC · Portland, OR</span>
       <span class="dot">·</span>
