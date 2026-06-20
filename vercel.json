@@ -2,6 +2,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/pdxbikemap", "destination": "https://bikeroutenicepdx.vercel.app", "permanent": false }
+    { "source": "/pdxbikemap", "destination": "https://pdxbikemap.frazierideas.com", "permanent": false }
   ]
 }
