@@ -23,6 +23,7 @@
       --lime-ink: #2f4d0a;
       --coral: #FB5D3C;
       --gold: #ECB22E;
+      --green: #16A34A;
       --ink: #1d1c1d;
       --paper: #FBFAFF;
       --card: #ffffff;
@@ -431,7 +432,7 @@
   <script>
     // ----- stats -----
     const STATS = [
-      { num: "2",    label: "apps live",        accent: "var(--coral)" },
+      { num: "3",    label: "apps live",        accent: "var(--coral)" },
       { num: "12+",  label: "quizzes & tools",  accent: "var(--purple-electric)" },
       { num: "400+", label: "scenarios written", accent: "var(--lime)" },
       { num: "1",    label: "idea factory",     accent: "var(--gold)" }
@@ -452,6 +453,13 @@
         blurb: "Recipes → meal plan → shopping list → groceries in your cart. Import any recipe, plan the week on a drag-and-drop board, and push the list straight to Kroger / Fred Meyer. iOS app too.",
         url: "https://planshopeat.app",
         accent: "var(--lime)", ink: "var(--lime-ink)"
+      },
+      {
+        tag: "App · Live",
+        title: "PDX Bike Map",
+        blurb: "Plan a Portland bike route that prefers neighborhood greenways over arterials. Drag the line to reshape it, or tap two points to route through any street you want. Web + iOS.",
+        url: "https://bikeroutenicepdx.vercel.app",
+        accent: "var(--green)", ink: "#fff"
       }
     ];
 
@@ -459,8 +467,6 @@
     const WORKSHOP = [
       { title: "Pothole Reporter", tag: "soon", accent: "var(--purple-electric)",
         blurb: "Snap a pothole, auto-file the report to Portland's PDX Reporter. Native iOS + a web PWA." },
-      { title: "BikeRouteNicePDX", tag: "soon", accent: "var(--coral)",
-        blurb: "Finger-draw a route and snap it to Portland's neighborhood greenways. Quiet streets, not arterials." },
       { title: "Trip Shift", tag: "soon", accent: "var(--gold)", gold: true,
         blurb: "Turn car trips into walks, rides, and bus hops — and watch the CO₂, calories, and miles add up." }
     ];
