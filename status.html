@@ -352,15 +352,17 @@
       {
         name: "Pothole Reporter",
         kind: "iOS + Web + Android",
-        status: "beta", visibility: "private", progress: 75,
+        status: "beta", visibility: "private", progress: 85,
         accent: "var(--gold)",
         blurb: "Snap a pothole and auto-file the report to Portland's PDX Reporter — no forms. Native iOS auto-submits and can batch-import every pothole photo from your library; a web PWA hands off via share/email; an Android port ships through a personal F-Droid repo.",
         stack: ["SwiftUI", "Static PWA", "Kotlin / Compose", "Vercel", "F-Droid"],
         links: [
-          { label: "potholes.frazierideas.com", href: "https://potholes.frazierideas.com", primary: true }
+          { label: "Join the iOS beta (TestFlight)", href: "https://testflight.apple.com/join/g1r38Z4u", primary: true },
+          { label: "potholes.frazierideas.com", href: "https://potholes.frazierideas.com" }
         ],
         log: [
-          { date: "Jun 2026", what: "Privacy policy + legal docs done; App Store Connect record created. Next: archive & upload to TestFlight." },
+          { date: "Jun 2026", what: "iOS app live in public TestFlight beta — anyone can join via the link and file real reports." },
+          { date: "Jun 2026", what: "Privacy policy + legal docs done; App Store Connect record created; archived & uploaded to TestFlight." },
           { date: "Jun 2026", what: "Android port (Kotlin/Compose) building and distributed via a self-hosted F-Droid repo." },
           { date: "Jun 2026", what: "Web PWA live on Vercel at a custom domain." }
         ]

@@ -1,5 +1,21 @@
 # Build Log — frazierideas
 
+## 2026-06-20 — Pothole app → TestFlight beta (homepage + status)
+
+**Prompt:** "update frazier ideas with the current status of pothole app and link to test flight https://testflight.apple.com/join/g1r38Z4u" then "comit and push".
+
+**Problem:** The PDX Pothole Reporter iOS app went live in public TestFlight beta, but the site still showed it as a link-less "soon" teaser in the workshop section, and `/status` listed the next step as "archive & upload to TestFlight" — both stale.
+
+**Solution:**
+- **`index.html`:** Promoted **PDX Pothole Reporter** out of the link-less `WORKSHOP` section into the live `APPS` grid as a card tagged **"iOS · TestFlight Beta"**, linking to the public join URL (`testflight.apple.com/join/g1r38Z4u`), purple accent, with the live web PWA (`potholes.frazierideas.com`) noted in the blurb. Workshop now holds only Trip Shift.
+- **`status.html`:** Bumped Pothole progress 75 → 85; added the TestFlight join link as the primary link (web PWA kept as a secondary ghost link); added a log entry "iOS app live in public TestFlight beta — anyone can join via the link and file real reports" and updated the prior "Next: archive & upload" note to reflect it's been uploaded.
+
+**Key decisions:**
+- Kept the bundle/brand framing from `pothole-reporter/TESTFLIGHT.md`: public name **PDX Pothole Reporter**, brand home Frazier Ideas (not Fairpoint). The "in beta tile once the public TestFlight link exists" plan from that doc is now executed.
+- Card stays single-primary-link (TestFlight, the thing the user asked to surface); web PWA demoted to the blurb on the homepage and a secondary link on `/status`.
+
+**Changed files:** `index.html`, `status.html`, `BUILD_LOG.md`
+
 ## 2026-06-19 — Add /status sub-page (the workshop log)
 
 **Prompt:** "cool on [frazierideas].com i want a sub page that gives the project status. build notes, progress. both for me to be able to see, and to show to others." (Decisions chosen via follow-up: scope = *all projects, with a public/private split*; maintenance = *curated data array*, no build step.)
