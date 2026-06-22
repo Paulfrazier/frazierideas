@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDX Bike Map — Build Timeline · Frazier Ideas</title>
+  <meta name="description" content="The full build timeline for PDX Bike Map (BikeRouteNicePDX): every feature and change, from MVP scaffold to greenway-preferring routing, route editing, and live turn-by-turn navigation on web + iOS." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="PDX Bike Map — Build Timeline" />
+  <meta property="og:description" content="Every feature and change, step by step: greenway-preferring routing, drag-to-reshape editing, corridor routing, and live navigation on web + iOS." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://frazierideas.com/bikenice" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #4A154B;
+      --purple-electric: #6D28D9;
+      --lime: #84CC16;
+      --lime-ink: #2f4d0a;
+      --coral: #FB5D3C;
+      --gold: #ECB22E;
+      --green: #16a34a;
+      --ink: #1d1c1d;
+      --paper: #FBFAFF;
+      --card: #ffffff;
+      --muted: #6b6b6b;
+      --border: #e6e6e6;
+      --shadow: 4px 4px 0 var(--ink);
+      --shadow-lg: 6px 6px 0 var(--ink);
+      --shadow-xl: 9px 9px 0 var(--ink);
+      --radius: 16px;
+      --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --grot: "Space Grotesk", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at 8% 4%, rgba(22,163,74,0.14), transparent 34%),
+        radial-gradient(circle at 92% 2%, rgba(109,40,217,0.13), transparent 32%),
+        radial-gradient(circle at 50% 100%, rgba(132,204,22,0.12), transparent 40%),
+        radial-gradient(circle at 100% 60%, rgba(251,93,60,0.10), transparent 34%),
+        var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .wrap { max-width: 880px; margin: 0 auto; padding: 34px 22px 90px; }
+
+    a { color: inherit; }
+
+    /* ---------- TOP NAV ---------- */
+    .topnav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 26px;
+    }
+    .back {
+      font-family: var(--grot); font-weight: 700; font-size: 14px;
+      text-decoration: none; color: var(--ink);
+      background: var(--card); border: 2px solid var(--ink);
+      border-radius: 999px; padding: 7px 15px; box-shadow: var(--shadow);
+      display: inline-flex; align-items: center; gap: 7px;
+      transition: transform 0.12s var(--bounce), box-shadow 0.12s;
+    }
+    .back:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+    .back:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 var(--ink); }
+    .topnav .home-wordmark {
+      font-family: var(--grot); font-weight: 700; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+      text-decoration: none;
+    }
+    .topnav .home-wordmark b { color: var(--purple-electric); }
+
+    /* ---------- HERO ---------- */
+    .hero { position: relative; padding-top: 6px; }
+    .eyebrow {
+      display: inline-block; font-family: var(--grot); font-weight: 700;
+      font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em;
+      color: #fff; background: var(--green);
+      border: 2px solid var(--ink); border-radius: 999px;
+      padding: 6px 14px; box-shadow: var(--shadow); transform: rotate(-2deg);
+    }
+    .hero h1 {
+      font-family: var(--grot); font-weight: 700;
+      font-size: clamp(40px, 9vw, 80px); line-height: 0.9;
+      letter-spacing: -0.04em; margin: 20px 0 0; text-transform: uppercase;
+      color: var(--green);
+      -webkit-text-stroke: 2px var(--ink); text-shadow: var(--shadow-xl);
+      paint-order: stroke fill;
+    }
+    .hero .sub {
+      font-size: clamp(16px, 2.6vw, 19px); color: var(--muted);
+      margin: 18px 0 0; max-width: 640px; font-weight: 500;
+    }
+    .hero .sub strong { color: var(--ink); }
+    .updated {
+      font-family: var(--grot); font-weight: 700; font-size: 12px;
+      color: var(--muted); margin-top: 12px; display: inline-flex; gap: 7px; align-items: center;
+    }
+    .updated .pulse {
+      width: 9px; height: 9px; border-radius: 50%; background: var(--green);
+      box-shadow: 0 0 0 0 rgba(22,163,74,0.5); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(22,163,74,0.5); }
+      70% { box-shadow: 0 0 0 8px rgba(22,163,74,0); }
+      100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); }
+    }
+
+    /* ---------- LINKS ROW ---------- */
+    .herolinks { display: flex; flex-wrap: wrap; gap: 9px; margin: 22px 0 0; }
+    .lnk {
+      font-family: var(--grot); font-weight: 700; font-size: 13px; text-decoration: none;
+      border: 2px solid var(--ink); border-radius: 999px; padding: 8px 15px;
+      display: inline-flex; align-items: center; gap: 6px; box-shadow: 2px 2px 0 var(--ink);
+      transition: transform 0.1s var(--bounce), box-shadow 0.1s;
+    }
+    .lnk:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--ink); }
+    .lnk:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 var(--ink); }
+    .lnk.primary { background: var(--green); color: #fff; }
+    .lnk.ghost { background: var(--card); color: var(--ink); }
+    .lnk .arrow { transition: transform 0.15s var(--bounce); }
+    .lnk:hover .arrow { transform: translateX(3px); }
+
+    /* ---------- STATS ---------- */
+    .stats { display: flex; gap: 12px; flex-wrap: wrap; margin: 34px 0 0; }
+    .stat {
+      flex: 1 1 0; min-width: 110px;
+      background: var(--card); border: 3px solid var(--ink);
+      border-bottom: 8px solid var(--stat-accent, var(--green));
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 14px 16px; transition: transform 0.12s var(--bounce);
+    }
+    .stat:hover { transform: translateY(-3px) rotate(-1deg); }
+    .stat .num { font-family: var(--grot); font-weight: 700; font-size: 32px; line-height: 1; color: var(--purple); letter-spacing: -0.02em; }
+    .stat .label { font-size: 11px; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+
+    /* ---------- FILTER BAR ---------- */
+    .filterlabel { font-family: var(--grot); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 42px 0 10px; }
+    .filters { display: flex; gap: 9px; flex-wrap: wrap; }
+    .filter {
+      font-family: var(--grot); font-weight: 700; font-size: 13px;
+      cursor: pointer; border: 2px solid var(--ink); border-radius: 999px;
+      padding: 7px 14px; background: var(--card); color: var(--ink);
+      box-shadow: 2px 2px 0 var(--ink); transition: transform 0.1s var(--bounce), box-shadow 0.1s;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .filter:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); }
+    .filter[aria-pressed="true"] { background: var(--ink); color: #fff; box-shadow: 2px 2px 0 var(--green); }
+    .filter .swatch { width: 10px; height: 10px; border-radius: 3px; border: 1.5px solid var(--ink); }
+    .filter[aria-pressed="true"] .swatch { border-color: rgba(255,255,255,0.6); }
+
+    /* ---------- PHASES ---------- */
+    .phases { margin-top: 30px; }
+    .phase { margin-top: 38px; }
+    .phase:first-child { margin-top: 6px; }
+    .phasehead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+    .phasehead .pdate {
+      font-family: var(--grot); font-weight: 700; font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.06em; color: #fff;
+      background: var(--phase-accent, var(--purple-electric));
+      border: 2px solid var(--ink); border-radius: 999px; padding: 4px 11px;
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+    .phasehead h2 {
+      font-family: var(--grot); font-weight: 700; font-size: clamp(22px, 4vw, 28px);
+      letter-spacing: -0.02em; margin: 0; color: var(--ink);
+    }
+    .phasedesc { font-size: 14px; color: var(--muted); margin: 6px 0 0; max-width: 660px; font-weight: 500; }
+
+    /* timeline list */
+    .log { list-style: none; margin: 18px 0 0; padding: 0; position: relative; }
+    .log::before { content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 3px; background: var(--border); border-radius: 2px; }
+    .log li {
+      position: relative; padding: 0 0 18px 28px;
+    }
+    .log li:last-child { padding-bottom: 4px; }
+    .log li::before {
+      content: ""; position: absolute; left: 0; top: 4px;
+      width: 15px; height: 15px; border-radius: 50%;
+      background: var(--phase-accent, var(--purple-electric)); border: 3px solid var(--ink);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+    .entry {
+      background: var(--card); border: 2px solid var(--ink);
+      border-radius: 12px; box-shadow: 3px 3px 0 var(--ink);
+      padding: 12px 15px; transition: transform 0.12s var(--bounce), box-shadow 0.12s;
+    }
+    .entry:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+    .entry .what { font-family: var(--grot); font-weight: 700; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
+    .entry .detail { font-size: 13.5px; color: #444; margin-top: 4px; }
+    .entry .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
+    .tag {
+      font-family: var(--grot); font-weight: 700; font-size: 10.5px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      border: 1.5px solid var(--ink); border-radius: 999px; padding: 2px 9px;
+      white-space: nowrap;
+    }
+    .tag.web   { background: #ede9fe; color: #5b21b6; }
+    .tag.ios   { background: #dbeafe; color: #1e40af; }
+    .tag.server{ background: #fef3c7; color: #92400e; }
+    .tag.data  { background: #dcfce7; color: #166534; }
+    .tag.fix   { background: #fee2e2; color: #991b1b; }
+
+    .hidden { display: none !important; }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: 64px; padding-top: 26px; border-top: 3px solid var(--ink);
+      font-size: 14px; color: var(--muted);
+      display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: center; text-align: center;
+    }
+    footer .made { font-family: var(--grot); font-weight: 700; color: var(--ink); }
+    footer a { color: var(--purple-electric); text-decoration: none; font-weight: 700; }
+    footer a:hover { text-decoration: underline; }
+    footer .dot { color: var(--border); }
+    footer .llc {
+      font-family: var(--grot); font-weight: 700; font-size: 12px;
+      background: var(--lime); color: var(--lime-ink);
+      border: 2px solid var(--ink); border-radius: 999px; padding: 3px 11px; box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    @media (max-width: 560px) {
+      .wrap { padding: 26px 16px 64px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+
+    <nav class="topnav">
+      <a class="back" href="/status">← Back to status</a>
+      <a class="home-wordmark" href="/"><b>Frazier</b> Ideas</a>
+    </nav>
+
+    <header class="hero">
+      <span class="eyebrow">Build timeline</span>
+      <h1>PDX Bike Map</h1>
+      <p class="sub"><strong>Quiet streets, not stress.</strong> A bike router that prefers Portland's official neighborhood greenways over arterials — on web and iOS. Here's every feature and change, in the order it shipped.</p>
+      <div class="updated"><span class="pulse"></span><span id="updated"></span></div>
+
+      <div class="herolinks">
+        <a class="lnk primary" href="https://pdxbikemap.frazierideas.com" target="_blank" rel="noopener">Open the app <span class="arrow">→</span></a>
+        <a class="lnk ghost" href="https://github.com/Paulfrazier/bikeroutenicepdx" target="_blank" rel="noopener">GitHub <span class="arrow">→</span></a>
+      </div>
+
+      <div class="stats" id="stats"></div>
+    </header>
+
+    <div class="filterlabel">Filter by surface</div>
+    <div class="filters" id="filters"></div>
+
+    <section class="phases" id="phases" aria-label="Build timeline"></section>
+
+    <footer>
+      <span class="made">Built by <a href="https://github.com/Paulfrazier" target="_blank" rel="noopener">Paul Frazier</a></span>
+      <span class="dot">·</span>
+      <span class="llc">Frazier Ideas LLC · Portland, OR</span>
+      <span class="dot">·</span>
+      <a href="mailto:paulfrazier@gmail.com">say hi</a>
+    </footer>
+  </main>
+
+  <script>
+    const LAST_UPDATED = "June 21, 2026";
+
+    // surface tag keys: web | ios | server | data | fix
+    const PHASES = [
+      {
+        date: "May 3, 2026",
+        accent: "var(--purple-electric)",
+        title: "Foundation",
+        desc: "The skeleton: a greenway-aware routing stack with a clean separation between the bike data, the routing engine, and the apps that consume it.",
+        entries: [
+          { what: "MVP scaffold complete", detail: "Routing engine, Hono server, React web app, and a canonical test-route harness — all wired up and green. PBOT greenway GIS as the preference layer, OSM as the routing graph, Valhalla as the engine.", tags: ["server","web","data"] }
+        ]
+      },
+      {
+        date: "Jun 18, 2026",
+        accent: "var(--green)",
+        title: "The Portland Bike Map",
+        desc: "Pivoted from a bare router toward 'the Portland bike map' — render the entire official network so the route always has context.",
+        entries: [
+          { what: "Initial repo + public bike map", detail: "First commit of BikeRouteNicePDX as its own project.", tags: ["server","web"] },
+          { what: "Full Portland bike network, color-coded by facility", detail: "Draw all ~6,140 PBOT bike segments and color each one by its facility class (greenway, protected lane, painted lane, path…), so you can see the whole network at a glance.", tags: ["web","data"] }
+        ]
+      },
+      {
+        date: "Jun 19, 2026",
+        accent: "var(--gold)",
+        title: "Deploy & iOS bring-up",
+        desc: "Get the server live on Railway, point the native iOS app at it, and pick a free hosted basemap.",
+        entries: [
+          { what: "iOS app talks to the deployed server", detail: "Pointed the native app at the Railway-hosted server and added device code-signing so it runs on a real iPhone.", tags: ["ios","server"] },
+          { what: "Repo-root railway.json for GitHub-linked deploys", detail: "So the GitHub-connected deploy builds the server/ directory from the repo root automatically.", tags: ["server"] },
+          { what: "Fixed: bike network never rendered on iOS", detail: "A single empty-geometry feature was failing the entire MapKit GeoJSON decode and blanking the overlay. Pre-clean the feature collection before decoding.", tags: ["ios","fix"] },
+          { what: "OpenFreeMap basemap by default", detail: "Switched the web basemap to the free, no-key OpenFreeMap vector tiles, and kept a self-host PMTiles tile-build pipeline as an option.", tags: ["web","data"] }
+        ]
+      },
+      {
+        date: "Jun 19, 2026",
+        accent: "var(--coral)",
+        title: "Route editing you can touch",
+        desc: "The core interaction: draw and reshape a route by hand, but always snap it back onto the real street network so it stays rideable.",
+        entries: [
+          { what: "Current location: blue dot + recenter", detail: "Show where you are and add a one-tap recenter button.", tags: ["web","ios"] },
+          { what: "Raw drag-to-reshape route editing", detail: "Grab the route line anywhere and drag it to a new street — on both web and iOS.", tags: ["web","ios"] },
+          { what: "Re-snap hand-edited routes onto roads", detail: "Fix the squiggle: after you drag, the route re-snaps onto the network instead of leaving a freehand wiggle.", tags: ["web","ios","fix"] },
+          { what: "Clean via-point re-routing", detail: "Reshaping now works by inserting clean via-points and re-routing through them, rather than splicing raw geometry.", tags: ["web","server"] },
+          { what: "Waypoints, snap-to-network, snappier re-route", detail: "Faster, more responsive re-routing as you edit.", tags: ["web","server"] },
+          { what: "Durable waypoints + precise forcing anchors", detail: "Waypoints persist across edits; mark one as 'precise' to force the route exactly through it.", tags: ["web","ios"] },
+          { what: "Draggable endpoints", detail: "Drag the start and end pins themselves, with sensible snap on a normal drag.", tags: ["web","ios"] },
+          { what: "Fixed: long-press deleted a waypoint instead of toggling precise", detail: "Long-press now correctly toggles the precise/forcing flag.", tags: ["web","fix"] },
+          { what: "Manual mode: force a hand-drawn segment", detail: "Draw a segment by hand and splice it into the auto route when you want exactly that path.", tags: ["web","ios"] }
+        ]
+      },
+      {
+        date: "Jun 19, 2026",
+        accent: "var(--green)",
+        title: "Show how nice the route is",
+        desc: "Color the route itself by bike-friendliness, and make it pop against the colorful network underneath.",
+        entries: [
+          { what: "Auto-route on iOS + 3-tier friendliness coloring", detail: "Route computes automatically; the line is colored by how bike-friendly each stretch is (web + iOS).", tags: ["web","ios"] },
+          { what: "Honest 4-tier friendliness + route casing + 'use my location' start", detail: "Refined to an honest four-tier scale, added a casing outline, edit-mode reshape, and a start-from-my-location option.", tags: ["web","ios"] },
+          { what: "Make the route stand out from the greenways", detail: "Glow + bolder white casing on the hero line, and fade the underlying network so the route reads clearly even over same-colored greenways.", tags: ["web","ios"] }
+        ]
+      },
+      {
+        date: "Jun 19, 2026",
+        accent: "var(--purple-electric)",
+        title: "A genuinely greenway-preferring engine",
+        desc: "The hard part: getting a routing engine to actually prefer greenways. Tested stock Valhalla, proved tag-baking didn't work, and switched the routing engine to BRouter.",
+        entries: [
+          { what: "Greenway cost model + server-side coverage & preference", detail: "Added a cost model plus a server-side metric for how much of a route follows greenways, and a preference knob to bias toward them.", tags: ["server","data"] },
+          { what: "Custom-Valhalla pipeline: bake greenway tags into the PBF", detail: "Built a pipeline to bake PBOT greenway tags directly into the OSM data Valhalla routes on.", tags: ["data","server"] },
+          { what: "Validation finding: stock-Valhalla tag-baking doesn't bias to greenways", detail: "Recorded the honest result — Valhalla ignores the custom per-edge tags, so baking them in was inert. Documented rather than buried.", tags: ["data"] },
+          { what: "iOS Comfort / Balanced / Fast preference knob", detail: "Let riders pick how strongly to favor quiet streets vs. directness.", tags: ["ios"] },
+          { what: "Added BRouter as a routing service (Dockerfile)", detail: "Stood up BRouter — which reads OSM cycle-network route relations — as a greenway-preferring engine (~59% greenway coverage vs Valhalla's ~30% in testing).", tags: ["server","data"] },
+          { what: "Route /route through BRouter; keep /match on Valhalla", detail: "Primary routing now goes through BRouter; map-matching hand-drawn lines stays on Valhalla.", tags: ["server"] },
+          { what: "Coverage fallback when an engine lacks street names", detail: "The test harness scores by greenway coverage when an engine (BRouter) can't supply turn-by-turn names.", tags: ["server"] },
+          { what: "Name BRouter routes via Valhalla trace_route", detail: "Map-match BRouter's geometry back onto Valhalla to recover turn-by-turn directions and street names.", tags: ["server"] },
+          { what: "iOS turn-by-turn Directions panel", detail: "Show the maneuver list and street names on the native app.", tags: ["ios"] }
+        ]
+      },
+      {
+        date: "Jun 20, 2026",
+        accent: "var(--coral)",
+        title: "Corridor routing, legal & hardening",
+        desc: "Route through any street you tap, plus the unglamorous shipping work: privacy/terms, CORS, parity guards, and CI.",
+        entries: [
+          { what: "/corridor endpoint: route through a picked street section", detail: "Tap two points on any street and force the route through that corridor by sampling it into mandatory via-points — no custom routing engine needed.", tags: ["server","web"] },
+          { what: "Corridor confirm banner moved to the thumb zone", detail: "Put the confirmation control where your thumb already is on a phone.", tags: ["web"] },
+          { what: "Privacy Policy + Terms of Service", detail: "Added the legal pages, attributed to Frazier Ideas LLC.", tags: ["web"] },
+          { what: "Bike legend: bigger hide target + auto-hide on route start", detail: "Easier to dismiss the legend, and it gets out of the way automatically when you start a route.", tags: ["web"] },
+          { what: "CORS: accept a comma-separated WEB_ORIGIN", detail: "Support multiple allowed origins so the custom domain and preview URLs both work.", tags: ["server","fix"] },
+          { what: "Cross-surface maintenance guards + CI + ship skill", detail: "Added cheap text-parsing guards that keep the hand-duplicated web↔iOS logic in sync, wired them into CI, and added a /ship-bikenice skill.", tags: ["web","ios","server"] },
+          { what: "iOS: show estimated travel time alongside distance", detail: "Display ETA next to route distance, and preserve duration + steps through the display recompute.", tags: ["ios"] },
+          { what: "Web: fix iPhone viewport fit", detail: "Use dynamic viewport height (dvh) + safe-area insets so the full-screen map isn't cut off under the notch.", tags: ["web","fix"] },
+          { what: "Live turn-by-turn navigation", detail: "Real-time guidance that follows your location as you ride — native on iOS, and on the web where the browser allows it.", tags: ["ios","web"] }
+        ]
+      },
+      {
+        date: "Jun 20–21, 2026",
+        accent: "var(--green)",
+        title: "Search & layout polish",
+        desc: "Make finding a destination fast and the controls fit on a phone screen.",
+        entries: [
+          { what: "Address search: cleaner labels, recents, server result cache", detail: "Friendlier result labels, a recents list, and a server-side cache so repeat searches are instant.", tags: ["web","server"] },
+          { what: "Richer result labels", detail: "Show POI names, 'specific' badges, and street context so you can tell results apart.", tags: ["web"] },
+          { what: "Unify the route key with the bike-map legend", detail: "One consistent color key for both the network and the route line.", tags: ["web"] },
+          { what: "Group reshape tools behind one 'Edit route' toggle", detail: "Tuck the editing controls behind a single toggle to declutter the default view.", tags: ["web"] },
+          { what: "Photon autocomplete: faster, Portland-biased search", detail: "Switched address search to the Photon geocoder — Portland proximity bias, fuzzy partials, and noticeably faster (~0.3s/query). Same contract, so web + iOS both benefit.", tags: ["web","ios","server"] },
+          { what: "Start ride + Edit route on one row", detail: "Put both controls on a single row to reclaim drawer height on small screens — web and iOS in parity.", tags: ["web","ios"] }
+        ]
+      }
+    ];
+
+    const SURFACE_META = {
+      web:    { label: "Web" },
+      ios:    { label: "iOS" },
+      server: { label: "Server" },
+      data:   { label: "Data" },
+      fix:    { label: "Fix" }
+    };
+
+    function el(tag, cls, txt) {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (txt != null) e.textContent = txt;
+      return e;
+    }
+
+    const allEntries = PHASES.flatMap(p => p.entries);
+
+    // ---------- stats ----------
+    function renderStats() {
+      const surfaces = new Set();
+      allEntries.forEach(e => e.tags.forEach(t => { if (t !== "fix") surfaces.add(t); }));
+      const stats = [
+        { num: String(allEntries.length), label: "shipped changes", accent: "var(--green)" },
+        { num: String(PHASES.length), label: "build phases", accent: "var(--purple-electric)" },
+        { num: "3", label: "surfaces · web · iOS · server", accent: "var(--coral)" },
+        { num: "6.1k", label: "bike segments mapped", accent: "var(--gold)" }
+      ];
+      document.getElementById("stats").replaceChildren(...stats.map(s => {
+        const d = el("div", "stat");
+        d.style.setProperty("--stat-accent", s.accent);
+        d.append(el("div", "num", s.num), el("div", "label", s.label));
+        return d;
+      }));
+    }
+
+    // ---------- filters ----------
+    let activeFilter = "all";
+    function renderFilters() {
+      const opts = [
+        { key: "all", label: "Everything" },
+        { key: "web", label: "Web" },
+        { key: "ios", label: "iOS" },
+        { key: "server", label: "Server" },
+        { key: "data", label: "Data" },
+        { key: "fix", label: "Fixes" }
+      ];
+      const bar = document.getElementById("filters");
+      bar.replaceChildren(...opts.map(o => {
+        const b = el("button", "filter");
+        b.setAttribute("aria-pressed", o.key === activeFilter ? "true" : "false");
+        if (o.key !== "all") {
+          const sw = el("span", "swatch " + o.key);
+          b.append(sw);
+        }
+        b.append(document.createTextNode(o.label));
+        b.addEventListener("click", () => { activeFilter = o.key; renderFilters(); renderPhases(); });
+        return b;
+      }));
+    }
+
+    // ---------- phases ----------
+    function renderPhases() {
+      const host = document.getElementById("phases");
+      host.replaceChildren(...PHASES.map(phase => {
+        const visible = phase.entries.filter(e => activeFilter === "all" || e.tags.includes(activeFilter));
+        const sec = el("section", "phase");
+        if (!visible.length) sec.classList.add("hidden");
+        sec.style.setProperty("--phase-accent", phase.accent);
+
+        const head = el("div", "phasehead");
+        head.append(el("span", "pdate", phase.date), el("h2", null, phase.title));
+        sec.append(head);
+        sec.append(el("p", "phasedesc", phase.desc));
+
+        const ul = el("ul", "log");
+        visible.forEach(entry => {
+          const li = el("li");
+          const card = el("div", "entry");
+          card.append(el("div", "what", entry.what));
+          if (entry.detail) card.append(el("div", "detail", entry.detail));
+          if (entry.tags && entry.tags.length) {
+            const tags = el("div", "tags");
+            entry.tags.forEach(t => tags.append(el("span", "tag " + t, (SURFACE_META[t] || {}).label || t)));
+            card.append(tags);
+          }
+          li.append(card);
+          ul.append(li);
+        });
+        sec.append(ul);
+        return sec;
+      }));
+    }
+
+    document.getElementById("updated").textContent = "Last updated " + LAST_UPDATED;
+    renderStats();
+    renderFilters();
+    renderPhases();
+  </script>
+</body>
+</html>

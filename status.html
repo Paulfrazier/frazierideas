@@ -292,7 +292,7 @@
   </main>
 
   <script>
-    const LAST_UPDATED = "June 19, 2026";
+    const LAST_UPDATED = "June 21, 2026";
 
     // status keys: live | building | beta | planning
     const STATUS_META = {
@@ -370,14 +370,19 @@
       {
         name: "BikeRouteNicePDX",
         kind: "iOS + Web (PWA)",
-        status: "building", visibility: "public", progress: 60,
+        status: "building", visibility: "public", progress: 72,
         accent: "var(--coral)",
         blurb: "Routing that prefers Portland's official neighborhood greenways over arterials — quiet streets, not stress. Finger-draw a path on iOS and snap it to the real bike network; the web app renders the full PBOT bike map color-coded by facility type.",
         stack: ["Valhalla", "MapLibre", "Hono", "React", "SwiftUI", "PBOT GIS"],
         links: [
-          { label: "GitHub", href: "https://github.com/Paulfrazier/bikeroutenicepdx", primary: true }
+          { label: "pdxbikemap.frazierideas.com", href: "https://pdxbikemap.frazierideas.com", primary: true },
+          { label: "Full build timeline", href: "/bikenice", ghost: true },
+          { label: "GitHub", href: "https://github.com/Paulfrazier/bikeroutenicepdx", ghost: true }
         ],
         log: [
+          { date: "Jun 21, 2026", what: "Photon address autocomplete (Portland-biased, ~0.3s); Start ride + Edit route on one row." },
+          { date: "Jun 20, 2026", what: "Corridor routing (route through any street you tap), live turn-by-turn nav, address search, privacy/terms." },
+          { date: "Jun 19, 2026", what: "Switched routing to BRouter (greenway-preferring); drag-to-reshape editing; 4-tier friendliness coloring." },
           { date: "Jun 19, 2026", what: "Repo made public." },
           { date: "Jun 18, 2026", what: "Pivoted toward 'the Portland bike map' — full bike network (6,140 segments) color-coded by facility class, on both web and iOS." },
           { date: "Jun 13, 2026", what: "Native finger-draw iOS app verified end-to-end: draw a path → map-matched route via Valhalla." },

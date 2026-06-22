@@ -1,5 +1,26 @@
 # Build Log — frazierideas
 
+## 2026-06-21 — PDX Bike Map build-timeline sub-page (`/bikenice`)
+
+**Prompt:** "make a detailed tiemline of all the features changes i've done for bike map, and publish to frazier ideas bike nice sub page to show project steps"
+
+**Problem:** BikeRouteNicePDX (PDX Bike Map) had 48 commits of feature work across web + iOS + server (May 3 – Jun 21, 2026), but the only public record was a four-line changelog on `/status`. There was no page that walked through the project's steps in detail.
+
+**Solution:**
+- **New single-file `bikenice.html`** (served at `/bikenice` via the existing `cleanUrls`), same neobrutalist DNA as `index.html`/`status.html` (Space Grotesk, hard offset shadows, green/purple/coral/gold tokens), green-accented to match the bike-map brand.
+- **Curated `PHASES` data array** — every shipped feature/change distilled from the git history into **8 labeled build phases** (Foundation → Portland Bike Map → Deploy & iOS bring-up → Route editing → Friendliness coloring → Greenway-preferring engine → Corridor/legal/hardening → Search & layout polish). Each phase has a date pill, description, and a vertical timeline of entries; each entry has a plain-English detail line and **surface tags** (Web / iOS / Server / Data / Fix).
+- **Auto stats** (shipped changes, build phases, surfaces, 6.1k segments) + a **surface filter bar** that re-renders client-side and hides phases with no matching entries. `textContent`-only DOM build, `prefers-reduced-motion` aware, responsive.
+- **Linked from `/status`:** the BikeRouteNicePDX card now has the live app (`pdxbikemap.frazierideas.com`) as primary, a **"Full build timeline" → `/bikenice`** ghost link, GitHub ghost link, and a refreshed 4-entry changelog. Bumped progress 60 → 72 and the page `LAST_UPDATED` to June 21, 2026.
+
+**Key decisions:**
+- **Curated phases over raw commit dump:** 48 terse commit subjects → 8 themed phases with human-readable detail, so it reads as "project steps" rather than a git log. Kept the honest engine-bake-off finding (stock Valhalla tag-baking was inert → switched to BRouter) since the build log already documents it publicly.
+- **Dedicated sub-page, not just more `/status` log entries:** the user asked for a *detailed* timeline; `/status` stays a one-glance overview and links into the deep page.
+- To update: edit the `PHASES` array (and bump `LAST_UPDATED`) in `bikenice.html`. No build step.
+
+**Verification:** Rendered in the gstack headless browser (desktop 1280 + mobile 390). No console errors; hero/stats/filters/all 8 phases render; the iOS surface filter narrows to 18 entries across 6 phases (Foundation + Portland Bike Map phases correctly hidden).
+
+**Changed files:** `bikenice.html` (new), `status.html`, `BUILD_LOG.md`
+
 ## 2026-06-20 — Pothole app → TestFlight beta (homepage + status)
 
 **Prompt:** "update frazier ideas with the current status of pothole app and link to test flight https://testflight.apple.com/join/g1r38Z4u" then "comit and push".
