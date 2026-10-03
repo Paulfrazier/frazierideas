@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PDX Bike Map — Build Timeline · Frazier Ideas</title>
-  <meta name="description" content="The full build timeline for PDX Bike Map (BikeRouteNicePDX): every feature and change, from MVP scaffold to greenway-preferring routing, route editing, and live turn-by-turn navigation on web + iOS." />
+  <title>BikeRoute PDX — Build Timeline · Frazier Ideas</title>
+  <meta name="description" content="The full build timeline for BikeRoute PDX (née BikeRouteNicePDX / PDX Bike Map): every feature and change, from MVP scaffold to greenway-preferring routing, route editing, and live turn-by-turn navigation on web + iOS." />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="PDX Bike Map — Build Timeline" />
+  <meta property="og:title" content="BikeRoute PDX — Build Timeline" />
   <meta property="og:description" content="Every feature and change, step by step: greenway-preferring routing, drag-to-reshape editing, corridor routing, and live navigation on web + iOS." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://frazierideas.com/bikenice" />
@@ -247,7 +247,7 @@
 
     <header class="hero">
       <span class="eyebrow">Build timeline</span>
-      <h1>PDX Bike Map</h1>
+      <h1>BikeRoute PDX</h1>
       <p class="sub"><strong>Quiet streets, not stress.</strong> A bike router that prefers Portland's official neighborhood greenways over arterials — on web and iOS. Here's every feature and change, in the order it shipped.</p>
       <div class="updated"><span class="pulse"></span><span id="updated"></span></div>
 
@@ -274,7 +274,7 @@
   </main>
 
   <script>
-    const LAST_UPDATED = "June 21, 2026";
+    const LAST_UPDATED = "October 3, 2026";
 
     // surface tag keys: web | ios | server | data | fix
     const PHASES = [
@@ -384,6 +384,54 @@
           { what: "Photon autocomplete: faster, Portland-biased search", detail: "Switched address search to the Photon geocoder — Portland proximity bias, fuzzy partials, and noticeably faster (~0.3s/query). Same contract, so web + iOS both benefit.", tags: ["web","ios","server"] },
           { what: "Start ride + Edit route on one row", detail: "Put both controls on a single row to reclaim drawer height on small screens — web and iOS in parity.", tags: ["web","ios"] }
         ]
+      },
+      {
+        date: "Jun 22–30, 2026",
+        accent: "var(--coral)",
+        title: "Grade every lane honestly",
+        desc: "A painted stripe on a 40mph road isn't a bike lane in any way that matters. Rebuilt the coloring and the routing around how streets actually feel to ride.",
+        entries: [
+          { what: "Rebranded to BikeRoute PDX", detail: "One name across web and iOS, plus a new home at pdxmap.gobikesgo.com.", tags: ["web"] },
+          { what: "Route editor overhaul", detail: "Tools reordered to Through · Drag · Build · Draw. Draw became freehand, resumable hand-routing where every stroke snaps to real roads.", tags: ["web","ios"] },
+          { what: "New \"caution\" tier for painted lanes on busy streets", detail: "Door-zone lanes graded by how many car lanes they sit next to (2–3 lanes → orange, 4+ → red), and routing penalizes them to match.", tags: ["web","ios","data"] },
+          { what: "Calm shared streets + PBOT's newest facilities", detail: "Added PBOT's low-traffic shared roadways and facilities built in 2024–26 that haven't hit the official map yet.", tags: ["data"] },
+          { what: "\"Comfort Lens\" legend with lane toggles", detail: "Redesigned the map key around comfort, with per-lane-type visibility toggles. Tap a lane to learn about it.", tags: ["web","ios"] },
+          { what: "Self-built routing engine is the default", detail: "Our own greenway-aware routing build replaced the stock one for every route on web and iOS.", tags: ["server","web","ios"] },
+          { what: "Server monitoring, PII stripped", detail: "Backend APM with all request details excluded, plus a privacy disclosure.", tags: ["server"] }
+        ]
+      },
+      {
+        date: "Jul 2026",
+        accent: "var(--purple-electric)",
+        title: "Real trips, real navigation",
+        desc: "From \"route from A to B\" to the errands you actually run.",
+        entries: [
+          { what: "Turn-by-turn overhaul", detail: "Screen stays awake during a ride; a full rework of guidance on web, iOS, and server.", tags: ["web","ios","server"] },
+          { what: "Security hardening", detail: "Rate limits, input validation on fix submissions, and Content-Security-Policy headers.", tags: ["server","web"] },
+          { what: "Saved places + multi-stop routes", detail: "Save home, work, and favorites; chain stops into one trip and navigate it one leg at a time.", tags: ["web","ios","server"] },
+          { what: "Headless TestFlight shipping", detail: "A one-command iOS upload to TestFlight, no API key required.", tags: ["ios"] }
+        ]
+      },
+      {
+        date: "Aug 2026",
+        accent: "var(--green)",
+        title: "The whole metro",
+        desc: "Portland's bike network doesn't stop at the city line, so neither does the map.",
+        entries: [
+          { what: "Metro-wide bike network", detail: "Expanded from the City of Portland to the full metro region using Metro's RLIS bike data — Multnomah, Washington, and Clackamas counties, on the map and in routing.", tags: ["data","web","ios"] },
+          { what: "Leaner hosting", detail: "Cut server memory cost substantially without slowing routes down.", tags: ["server"] }
+        ]
+      },
+      {
+        date: "Sep 24, 2026",
+        accent: "var(--gold)",
+        title: "Speed + battery pass",
+        desc: "Make it fast to open, fast to route, and easy on the phone.",
+        entries: [
+          { what: "Faster routes, miles everywhere, tidier mobile panel", detail: "Quicker route responses and consistent imperial units across the web app.", tags: ["web","server"] },
+          { what: "iOS launches faster with a cleaner map", detail: "The bike network now loads off the main thread, and the map is less cluttered.", tags: ["ios"] },
+          { what: "No more GPS drain outside a ride", detail: "Turn-by-turn location tracking now fully stops when you're not navigating, and audio is released after the arrival announcement (TestFlight build 10).", tags: ["ios","fix"] }
+        ]
       }
     ];
 
@@ -412,7 +460,7 @@
         { num: String(allEntries.length), label: "shipped changes", accent: "var(--green)" },
         { num: String(PHASES.length), label: "build phases", accent: "var(--purple-electric)" },
         { num: "3", label: "surfaces · web · iOS · server", accent: "var(--coral)" },
-        { num: "6.1k", label: "bike segments mapped", accent: "var(--gold)" }
+        { num: "3", label: "metro counties mapped", accent: "var(--gold)" }
       ];
       document.getElementById("stats").replaceChildren(...stats.map(s => {
         const d = el("div", "stat");
