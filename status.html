@@ -292,7 +292,7 @@
   </main>
 
   <script>
-    const LAST_UPDATED = "June 21, 2026";
+    const LAST_UPDATED = "October 3, 2026";
 
     // status keys: live | building | beta | planning
     const STATUS_META = {
@@ -312,6 +312,9 @@
         stack: ["FastAPI", "React", "Postgres", "Clerk", "Kroger API", "SwiftUI", "Railway", "Vercel"],
         links: [{ label: "planshopeat.app", href: "https://planshopeat.app", primary: true }],
         log: [
+          { date: "Sep 2026", what: "Speed + usability pass: iOS screens open instantly from a local cache, Shop loads in parallel, web lazy-loads secondary pages. iOS build 2 to TestFlight." },
+          { date: "Jul 2026", what: "Week-scoped shopping lists — one coherent plan → list → order pipeline per week; one-tap \"Build shopping list\", add regulars, and share the week's plan from iOS." },
+          { date: "Jul 2026", what: "Headless TestFlight upload script — ship a build from the terminal with no API key." },
           { date: "Jun 2026", what: "App Store submission prep — 4 of 5 code blockers closed; org enrollment via the LLC underway." },
           { date: "Jun 2026", what: "Shopping list now groups by store aisle or user-created kitchen zones, plus optional swipe-to-check." },
           { date: "Jun 2026", what: "Native iOS app shipping alongside the web app; fixed week-start mismatch (Sunday vs Monday)." },
@@ -361,6 +364,9 @@
           { label: "potholes.frazierideas.com", href: "https://potholes.frazierideas.com" }
         ],
         log: [
+          { date: "Sep 2026", what: "Faster photo thumbnails and easier-to-read city-report rows (TestFlight build 9)." },
+          { date: "Jul 2026", what: "Mark a pothole fixed from its map pin with an after-photo — complete with a big celebration and a thank-you-PBOT brag share." },
+          { date: "Jun 2026", what: "Worked around an iOS 26 WebKit crash in the PDX Reporter login (and filed it with Apple)." },
           { date: "Jun 2026", what: "iOS app live in public TestFlight beta — anyone can join via the link and file real reports." },
           { date: "Jun 2026", what: "Privacy policy + legal docs done; App Store Connect record created; archived & uploaded to TestFlight." },
           { date: "Jun 2026", what: "Android port (Kotlin/Compose) building and distributed via a self-hosted F-Droid repo." },
@@ -368,11 +374,11 @@
         ]
       },
       {
-        name: "BikeRouteNicePDX",
+        name: "BikeRoute PDX",
         kind: "iOS + Web (PWA)",
-        status: "building", visibility: "public", progress: 72,
+        status: "beta", visibility: "public", progress: 85,
         accent: "var(--coral)",
-        blurb: "Routing that prefers Portland's official neighborhood greenways over arterials — quiet streets, not stress. Finger-draw a path on iOS and snap it to the real bike network; the web app renders the full PBOT bike map color-coded by facility type.",
+        blurb: "Routing that prefers Portland's neighborhood greenways over stroads — quiet streets, not stress. Covers the whole metro, with multi-stop trips, saved places, turn-by-turn nav, draw-your-own routes, and a \"Comfort Lens\" map that grades every bike lane by how it actually feels to ride. Web app live; iOS in TestFlight.",
         stack: ["Valhalla", "MapLibre", "Hono", "React", "SwiftUI", "PBOT GIS"],
         links: [
           { label: "pdxbikemap.frazierideas.com", href: "https://pdxbikemap.frazierideas.com", primary: true },
@@ -380,6 +386,12 @@
           { label: "GitHub", href: "https://github.com/Paulfrazier/bikeroutenicepdx", ghost: true }
         ],
         log: [
+          { date: "Sep 24, 2026", what: "Speed pass: faster routes, miles everywhere, tidier mobile panel; iOS parses the map off the main thread and stops GPS draining battery outside a ride (TestFlight build 10)." },
+          { date: "Aug 7, 2026", what: "Bike network expanded from Portland to the whole metro via Metro RLIS data." },
+          { date: "Jul 29, 2026", what: "Saved places + multi-stop routes, navigated one leg at a time (web, iOS, server)." },
+          { date: "Jul 2, 2026", what: "Turn-by-turn overhaul (screen stays awake), compact Draw controls, security hardening (rate limits, CSP)." },
+          { date: "Jun 26–30, 2026", what: "\"Comfort Lens\" legend with lane-type toggles; painted lanes on busy streets graded as caution; PBOT's newest unpublished facilities added; self-built greenway-aware routing engine made the default." },
+          { date: "Jun 22, 2026", what: "Rebranded to BikeRoute PDX (matching the iOS app) — also at pdxmap.gobikesgo.com." },
           { date: "Jun 21, 2026", what: "Photon address autocomplete (Portland-biased, ~0.3s); Start ride + Edit route on one row." },
           { date: "Jun 20, 2026", what: "Corridor routing (route through any street you tap), live turn-by-turn nav, address search, privacy/terms." },
           { date: "Jun 19, 2026", what: "Switched routing to BRouter (greenway-preferring); drag-to-reshape editing; 4-tier friendliness coloring." },
@@ -406,18 +418,45 @@
       {
         name: "Backplan",
         kind: "Web + iOS tool",
-        status: "live", visibility: "public", progress: 80,
+        status: "live", visibility: "public", progress: 88,
         accent: "var(--lime)",
-        blurb: "A backwards time-planner: enter a target time and your steps, and it tells you when to start each one (and the whole thing). Single-file web app plus a native SwiftUI iOS app with a live countdown timer and notifications.",
+        blurb: "A backwards time-planner: enter a target time and your steps, and it tells you when to start each one (and the whole thing). A Day view pins your fixed times, drops plans in as blocks, and tells you when to leave. Single-file web app plus a native SwiftUI iOS app with a live countdown timer and notifications.",
         stack: ["Static HTML", "SwiftUI", "XcodeGen", "Vercel"],
         links: [
           { label: "backplan.fairpoint.website", href: "https://backplan.fairpoint.website", primary: true },
           { label: "GitHub", href: "https://github.com/Paulfrazier/backplan", ghost: true }
         ],
         log: [
+          { date: "Oct 1, 2026", what: "Day view: pin fixed times, drag plans in as linked blocks bridged from wherever the day leaves you, and see when to leave — web + iOS." },
+          { date: "Sep 22, 2026", what: "Travel steps, saved places, a timeline progress bar, and an overview mode." },
           { date: "Jun 12, 2026", what: "Native iOS app added (timer + notifications)." },
           { date: "Jun 7, 2026", what: "Drag-to-reorder steps." },
-          { date: "2026", what: "Backlog: maps API for travel legs, URL-hash sharing, cross-device saving." }
+          { date: "2026", what: "Backlog: URL-hash sharing, cross-device saving, TestFlight beta." }
+        ]
+      },
+      {
+        name: "Bike Route Race",
+        kind: "Web tool",
+        status: "building", visibility: "private", progress: 50,
+        accent: "var(--green)",
+        blurb: "Which of two bike routes is actually faster? Drop two pins and it finds every one of your own Strava rides that passed through both, groups them into route variants named after the streets that differ, and compares times with statistics that decline to call a winner when the data can't support one.",
+        stack: ["TypeScript", "Hono", "React", "Vite", "Strava archive"],
+        links: [],
+        log: [
+          { date: "Aug 2026", what: "Calibrated against 2,000+ real rides; activity-type + max-detour filters, e-bike warnings, pins by address or point of interest." },
+          { date: "Aug 21, 2026", what: "First version: virtual segments from your own Strava archive — no Strava API approval needed." }
+        ]
+      },
+      {
+        name: "CardSense",
+        kind: "Web app",
+        status: "building", visibility: "private", progress: 60,
+        accent: "var(--coral)",
+        blurb: "Which credit card should you have used? Card rewards rules written as plain YAML, replayed against real transaction history to show what each card would have earned and where you're leaving points on the table.",
+        stack: ["FastAPI", "SQLite", "React", "Vite", "YAML rules"],
+        links: [],
+        log: [
+          { date: "Aug 2026", what: "First version: rules-as-YAML optimizer running end-to-end on a year of real transactions." }
         ]
       },
       {
